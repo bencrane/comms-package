@@ -81,3 +81,21 @@ export { TERMINAL_MESSAGE_STATUSES } from './types'
 export { useMessaging } from './hooks/useMessaging'
 export { useMessageStatus } from './hooks/useMessageStatus'
 export { useConversation } from './hooks/useConversation'
+
+// Conversations types
+export type {
+  OEXConversationsClientState,
+  OEXConversationsConnectionState,
+  OEXRealtimeConversation,
+  OEXRealtimeMessage,
+  OEXRealtimeParticipant,
+  OEXConversationsProviderConfig,
+  OEXConversationsContextValue,
+} from './types'
+
+// Conversations provider
+export { OEXConversationsProvider } from './providers/OEXConversationsProvider'
+
+// Conversations hooks
+export { useRealtimeConversation } from './hooks/useRealtimeConversation'
+export { useConversationList } from './hooks/useConversationList'

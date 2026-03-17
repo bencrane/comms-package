@@ -28,6 +28,7 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
+    "@twilio/conversations": "^2.7.0",
     "@twilio/voice-sdk": "^2.12.0"
   },
   "devDependencies": {

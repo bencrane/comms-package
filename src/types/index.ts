@@ -1,4 +1,5 @@
 export * from './api'
+export * from './conversations'
 export * from './events'
 export * from './messaging'
 export * from './voice'
