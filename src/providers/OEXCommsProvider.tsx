@@ -1,4 +1,4 @@
-import {
+import React, {
   createContext,
   useCallback,
   useEffect,
@@ -18,6 +18,19 @@ import { createOEXError } from '../utils/errors'
 
 export const OEXCommsContext = createContext<OEXCommsContextValue | null>(null)
 
+// --- Internal Context (not exported from src/index.ts) ---
+
+export interface OEXCommsInternalContextValue {
+  deviceRef: React.RefObject<Device | null>
+  callRef: React.RefObject<Call | null>
+  apiClientRef: React.RefObject<ApiClient | null>
+  tokenManagerRef: React.RefObject<TokenManager | null>
+  dispatch: React.Dispatch<CommsAction>
+  lastCallSidRef: React.RefObject<string | null>
+}
+
+export const OEXCommsInternalContext = createContext<OEXCommsInternalContextValue | null>(null)
+
 // --- State & Reducer ---
 
 interface CommsState {
@@ -28,7 +41,7 @@ interface CommsState {
   error: OEXError | null
 }
 
-type CommsAction =
+export type CommsAction =
   | { type: 'DEVICE_STATE_CHANGED'; state: OEXDeviceState }
   | { type: 'IDENTITY_SET'; identity: string }
   | { type: 'CALL_STATE_CHANGED'; callState: OEXCallState; callInfo: OEXCallInfo | null }
@@ -37,6 +50,7 @@ type CommsAction =
   | { type: 'ERROR'; error: OEXError }
   | { type: 'CLEAR_ERROR' }
   | { type: 'INCOMING_CALL'; callInfo: OEXCallInfo }
+  | { type: 'CALL_SID_SET'; callSid: string }
 
 const initialState: CommsState = {
   deviceState: 'unregistered',
@@ -70,6 +84,9 @@ function commsReducer(state: CommsState, action: CommsAction): CommsState {
       return { ...state, error: null }
     case 'INCOMING_CALL':
       return { ...state, callState: 'pending', callInfo: action.callInfo }
+    case 'CALL_SID_SET':
+      if (!state.callInfo) return state
+      return { ...state, callInfo: { ...state.callInfo, callSid: action.callSid } }
     default:
       return state
   }
@@ -90,6 +107,8 @@ export function OEXCommsProvider({ apiBaseUrl, authToken, children }: OEXCommsPr
   const deviceRef = useRef<Device | null>(null)
   const tokenManagerRef = useRef<TokenManager | null>(null)
   const callRef = useRef<Call | null>(null)
+  const apiClientRef = useRef<ApiClient | null>(null)
+  const lastCallSidRef = useRef<string | null>(null)
 
   // Subscribe to all events on a Call instance
   const wireCallEvents = useCallback((call: Call) => {
@@ -107,6 +126,10 @@ export function OEXCommsProvider({ apiBaseUrl, authToken, children }: OEXCommsPr
         callState: 'open',
         callInfo: null,
       })
+      const callSid = call.parameters?.CallSid ?? null
+      if (callSid) {
+        dispatch({ type: 'CALL_SID_SET', callSid })
+      }
     })
 
     call.on('reconnecting', () => {
@@ -126,16 +149,25 @@ export function OEXCommsProvider({ apiBaseUrl, authToken, children }: OEXCommsPr
     })
 
     call.on('disconnect', () => {
+      if (callRef.current) {
+        lastCallSidRef.current = callRef.current.parameters?.CallSid ?? null
+      }
       callRef.current = null
       dispatch({ type: 'CALL_ENDED' })
     })
 
     call.on('cancel', () => {
+      if (callRef.current) {
+        lastCallSidRef.current = callRef.current.parameters?.CallSid ?? null
+      }
       callRef.current = null
       dispatch({ type: 'CALL_ENDED' })
     })
 
     call.on('reject', () => {
+      if (callRef.current) {
+        lastCallSidRef.current = callRef.current.parameters?.CallSid ?? null
+      }
       callRef.current = null
       dispatch({ type: 'CALL_ENDED' })
     })
@@ -164,6 +196,7 @@ export function OEXCommsProvider({ apiBaseUrl, authToken, children }: OEXCommsPr
 
     let destroyed = false
     const apiClient = new ApiClient({ apiBaseUrl, authToken })
+    apiClientRef.current = apiClient
     const tokenManager = new TokenManager(apiClient)
     tokenManagerRef.current = tokenManager
 
@@ -301,6 +334,7 @@ export function OEXCommsProvider({ apiBaseUrl, authToken, children }: OEXCommsPr
       deviceRef.current = null
       tokenManager.destroy()
       tokenManagerRef.current = null
+      apiClientRef.current = null
       callRef.current = null
     }
   }, [apiBaseUrl, authToken, wireCallEvents])
@@ -444,5 +478,21 @@ export function OEXCommsProvider({ apiBaseUrl, authToken, children }: OEXCommsPr
     ],
   )
 
-  return <OEXCommsContext.Provider value={contextValue}>{children}</OEXCommsContext.Provider>
+  const internalContextValue = useMemo<OEXCommsInternalContextValue>(
+    () => ({
+      deviceRef,
+      callRef,
+      apiClientRef,
+      tokenManagerRef,
+      dispatch,
+      lastCallSidRef,
+    }),
+    [], // refs and dispatch are stable
+  )
+
+  return (
+    <OEXCommsInternalContext.Provider value={internalContextValue}>
+      <OEXCommsContext.Provider value={contextValue}>{children}</OEXCommsContext.Provider>
+    </OEXCommsInternalContext.Provider>
+  )
 }
