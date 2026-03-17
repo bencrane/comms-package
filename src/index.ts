@@ -48,6 +48,19 @@ export { usePreflight } from './hooks/usePreflight'
 export { useDisposition } from './hooks/useDisposition'
 export { useCallActions } from './hooks/useCallActions'
 
+// Power Dialer types
+export type {
+  OEXDialerLead,
+  OEXDialerSessionState,
+  OEXDialerLeadState,
+  OEXDialerLeadResult,
+  OEXDialerSessionStats,
+  OEXDialerOptions,
+} from './types'
+
+// Power Dialer hook
+export { usePowerDialer } from './hooks/usePowerDialer'
+
 // Error utilities
 export type { ErrorCatalogEntry } from './utils/errors'
 export { createTwilioOEXError, getErrorInfo } from './utils/errors'

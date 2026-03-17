@@ -1,4 +1,5 @@
 import type { OEXError } from './index'
+import type { Disposition } from './api'
 
 // --- Device State ---
 
@@ -150,4 +151,60 @@ export interface OEXCommsContextValue {
   acceptIncoming: () => void
   /** Reject an incoming call */
   rejectIncoming: () => void
+}
+
+// --- Power Dialer ---
+
+export interface OEXDialerLead {
+  /** Unique identifier for the lead */
+  id: string
+  /** Phone number to dial */
+  phoneNumber: string
+  /** Display name (optional) */
+  name?: string
+  /** App-specific metadata — the dialer passes this through without interpreting it */
+  metadata?: Record<string, unknown>
+}
+
+export type OEXDialerSessionState = 'idle' | 'active' | 'paused' | 'completed'
+
+export type OEXDialerLeadState =
+  | 'waiting'
+  | 'dialing'
+  | 'on_call'
+  | 'awaiting_disposition'
+  | 'completed'
+  | 'skipped'
+
+export interface OEXDialerLeadResult {
+  leadId: string
+  state: OEXDialerLeadState
+  disposition?: Disposition
+  callSid?: string
+  /** Timestamp when the call started (ms since epoch) */
+  callStartedAt?: number
+  /** Timestamp when the call ended (ms since epoch) */
+  callEndedAt?: number
+}
+
+export interface OEXDialerSessionStats {
+  /** Total leads in the queue */
+  totalLeads: number
+  /** Number of calls completed (disposition captured) */
+  callsCompleted: number
+  /** Number of leads skipped */
+  callsSkipped: number
+  /** Number of leads remaining (not yet dialed or skipped) */
+  callsRemaining: number
+  /** Disposition breakdown — count per disposition value */
+  outcomes: Partial<Record<Disposition, number>>
+  /** Session start timestamp (ms since epoch), or null if not started */
+  sessionStartedAt: number | null
+  /** Session duration in milliseconds (updates while active) */
+  sessionDurationMs: number
+}
+
+export interface OEXDialerOptions {
+  /** Delay in ms before auto-advancing to the next lead (default: 1500) */
+  advanceDelayMs?: number
 }
