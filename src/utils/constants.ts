@@ -1,0 +1,4 @@
+export const DEFAULT_TOKEN_REFRESH_BUFFER_SECONDS = 60
+export const MAX_TOKEN_REFRESH_RETRIES = 3
+export const RETRY_BASE_DELAY_MS = 1000
+export const MAX_API_RETRIES = 3
