@@ -1,5 +1,6 @@
 export * from './api'
 export * from './events'
+export * from './messaging'
 export * from './voice'
 
 export interface OEXError {

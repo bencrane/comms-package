@@ -64,3 +64,20 @@ export { usePowerDialer } from './hooks/usePowerDialer'
 // Error utilities
 export type { ErrorCatalogEntry } from './utils/errors'
 export { createTwilioOEXError, getErrorInfo } from './utils/errors'
+
+// Messaging types
+export type {
+  OEXMessageDirection,
+  OEXMessageStatus,
+  OEXMessage,
+  OEXSendMessageOptions,
+  OEXMessageListParams,
+  OEXMessageStatusPollOptions,
+} from './types'
+
+export { TERMINAL_MESSAGE_STATUSES } from './types'
+
+// Messaging hooks
+export { useMessaging } from './hooks/useMessaging'
+export { useMessageStatus } from './hooks/useMessageStatus'
+export { useConversation } from './hooks/useConversation'
