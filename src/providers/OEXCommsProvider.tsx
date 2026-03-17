@@ -12,7 +12,7 @@ import type { OEXCommsContextValue, OEXDeviceState, OEXCallState, OEXCallInfo } 
 import type { OEXError } from '../types'
 import { ApiClient } from '../services/api-client'
 import { TokenManager } from '../services/token-manager'
-import { createOEXError } from '../utils/errors'
+import { createOEXError, createTwilioOEXError } from '../utils/errors'
 
 // --- Context ---
 
@@ -175,7 +175,7 @@ export function OEXCommsProvider({ apiBaseUrl, authToken, children }: OEXCommsPr
     call.on('error', (error: { code?: number; message?: string }) => {
       dispatch({
         type: 'ERROR',
-        error: createOEXError(error.code ?? 0, error.message ?? 'Call error'),
+        error: error.code ? createTwilioOEXError(error.code, error.message) : createOEXError(0, error.message ?? 'Call error'),
       })
     })
 
@@ -213,10 +213,7 @@ export function OEXCommsProvider({ apiBaseUrl, authToken, children }: OEXCommsPr
         const error = err as { code?: number; message?: string }
         dispatch({
           type: 'ERROR',
-          error: createOEXError(
-            error.code ?? 0,
-            error.message ?? 'Failed to fetch voice token',
-          ),
+          error: error.code ? createTwilioOEXError(error.code, error.message) : createOEXError(0, error.message ?? 'Failed to fetch voice token'),
         })
         return
       }
@@ -253,7 +250,7 @@ export function OEXCommsProvider({ apiBaseUrl, authToken, children }: OEXCommsPr
       device.on('error', (error: { code?: number; message?: string }) => {
         dispatch({
           type: 'ERROR',
-          error: createOEXError(error.code ?? 0, error.message ?? 'Device error'),
+          error: error.code ? createTwilioOEXError(error.code, error.message) : createOEXError(0, error.message ?? 'Device error'),
         })
       })
 
@@ -265,10 +262,7 @@ export function OEXCommsProvider({ apiBaseUrl, authToken, children }: OEXCommsPr
           const error = err as { code?: number; message?: string }
           dispatch({
             type: 'ERROR',
-            error: createOEXError(
-              error.code ?? 0,
-              error.message ?? 'Token refresh failed',
-            ),
+            error: error.code ? createTwilioOEXError(error.code, error.message) : createOEXError(0, error.message ?? 'Token refresh failed'),
           })
         }
       })
@@ -295,7 +289,7 @@ export function OEXCommsProvider({ apiBaseUrl, authToken, children }: OEXCommsPr
         const error = err as { code?: number; message?: string }
         dispatch({
           type: 'ERROR',
-          error: createOEXError(error.code ?? 0, error.message ?? 'Device registration failed'),
+          error: error.code ? createTwilioOEXError(error.code, error.message) : createOEXError(0, error.message ?? 'Device registration failed'),
         })
       }
 
@@ -377,7 +371,7 @@ export function OEXCommsProvider({ apiBaseUrl, authToken, children }: OEXCommsPr
         const error = err as { code?: number; message?: string }
         dispatch({
           type: 'ERROR',
-          error: createOEXError(error.code ?? 0, error.message ?? 'Failed to connect call'),
+          error: error.code ? createTwilioOEXError(error.code, error.message) : createOEXError(0, error.message ?? 'Failed to connect call'),
         })
       }
     },

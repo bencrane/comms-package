@@ -47,3 +47,7 @@ export { useCallQuality } from './hooks/useCallQuality'
 export { usePreflight } from './hooks/usePreflight'
 export { useDisposition } from './hooks/useDisposition'
 export { useCallActions } from './hooks/useCallActions'
+
+// Error utilities
+export type { ErrorCatalogEntry } from './utils/errors'
+export { createTwilioOEXError, getErrorInfo } from './utils/errors'

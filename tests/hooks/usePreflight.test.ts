@@ -201,7 +201,7 @@ describe('usePreflight', () => {
 
     expect(result.current.status).toBe('failed')
     expect(result.current.error).not.toBeNull()
-    expect(result.current.error!.message).toBe('Connection failed')
+    expect(result.current.error!.message).toBe('Access forbidden')
   })
 
   it('stop() calls preflightTest.stop()', async () => {

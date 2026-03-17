@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect, useCallback } from 'react'
 import { OEXCommsInternalContext } from '../providers/OEXCommsProvider'
 import type { OEXAudioDevice, OEXError } from '../types'
-import { createOEXError } from '../utils/errors'
+import { createOEXError, createTwilioOEXError } from '../utils/errors'
 
 export interface UseAudioDevicesReturn {
   /** Available microphone devices */
@@ -89,7 +89,7 @@ export function useAudioDevices(): UseAudioDevicesReturn {
         setError(null)
       } catch (err) {
         const e = err as { code?: number; message?: string }
-        setError(createOEXError(e.code ?? 0, e.message ?? 'Failed to set input device'))
+        setError(e.code ? createTwilioOEXError(e.code, e.message) : createOEXError(0, e.message ?? 'Failed to set input device'))
       }
     },
     [deviceRef],
@@ -111,7 +111,7 @@ export function useAudioDevices(): UseAudioDevicesReturn {
         setError(null)
       } catch (err) {
         const e = err as { code?: number; message?: string }
-        setError(createOEXError(e.code ?? 0, e.message ?? 'Failed to set output device'))
+        setError(e.code ? createTwilioOEXError(e.code, e.message) : createOEXError(0, e.message ?? 'Failed to set output device'))
       }
     },
     [deviceRef],
@@ -128,7 +128,7 @@ export function useAudioDevices(): UseAudioDevicesReturn {
       setError(null)
     } catch (err) {
       const e = err as { code?: number; message?: string }
-      setError(createOEXError(e.code ?? 0, e.message ?? 'Failed to test speaker'))
+      setError(e.code ? createTwilioOEXError(e.code, e.message) : createOEXError(0, e.message ?? 'Failed to test speaker'))
     }
   }, [deviceRef])
 

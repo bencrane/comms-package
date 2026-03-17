@@ -2,7 +2,7 @@ import { useContext, useState, useRef, useCallback, useEffect } from 'react'
 import { PreflightTest } from '@twilio/voice-sdk'
 import { OEXCommsInternalContext } from '../providers/OEXCommsProvider'
 import type { OEXPreflightStatus, OEXPreflightReport, OEXCallQualityLevel, OEXError } from '../types'
-import { createOEXError } from '../utils/errors'
+import { createOEXError, createTwilioOEXError } from '../utils/errors'
 
 export interface UsePreflightReturn {
   /** Current test status */
@@ -57,7 +57,7 @@ export function usePreflight(): UsePreflightReturn {
       token = response.token
     } catch (err) {
       const e = err as { code?: number; message?: string }
-      setError(createOEXError(e.code ?? 0, e.message ?? 'Failed to fetch token for preflight'))
+      setError(e.code ? createTwilioOEXError(e.code, e.message) : createOEXError(0, e.message ?? 'Failed to fetch token for preflight'))
       setStatus('failed')
       return
     }
@@ -110,7 +110,7 @@ export function usePreflight(): UsePreflightReturn {
     })
 
     test.on('failed', (err: { code?: number; message?: string }) => {
-      setError(createOEXError(err.code ?? 0, err.message ?? 'Preflight test failed'))
+      setError(err.code ? createTwilioOEXError(err.code, err.message) : createOEXError(0, err.message ?? 'Preflight test failed'))
       setStatus('failed')
       preflightTestRef.current = null
     })
