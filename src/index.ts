@@ -127,3 +127,19 @@ export type {
   PowerDialerPanelControlsProps,
   PowerDialerPanelStatsProps,
 } from './components/PowerDialerPanel'
+
+// Messaging components
+export { ConversationThread } from './components/ConversationThread'
+export type {
+  ConversationThreadProps,
+  ConversationThreadMessageListProps,
+  ConversationThreadMessageProps,
+  ConversationThreadComposeInputProps,
+  ConversationThreadTypingIndicatorProps,
+} from './components/ConversationThread'
+
+export { ConversationList } from './components/ConversationList'
+export type {
+  ConversationListProps,
+  ConversationListItemProps,
+} from './components/ConversationList'
