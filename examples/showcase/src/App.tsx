@@ -9,6 +9,7 @@ import { IncomingCallBannerShowcase } from './sections/IncomingCallBannerShowcas
 import { PowerDialerPanelShowcase } from './sections/PowerDialerPanelShowcase'
 import { ConversationThreadShowcase } from './sections/ConversationThreadShowcase'
 import { ConversationListShowcase } from './sections/ConversationListShowcase'
+import { ActivityTimelineShowcase } from './sections/ActivityTimelineShowcase'
 
 import { Sun, Moon } from '../../../src/components/icons'
 
@@ -37,6 +38,7 @@ export function App() {
         <PowerDialerPanelShowcase />
         <ConversationThreadShowcase />
         <ConversationListShowcase />
+        <ActivityTimelineShowcase />
       </main>
     </div>
   )
