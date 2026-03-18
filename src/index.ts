@@ -99,3 +99,31 @@ export { OEXConversationsProvider } from './providers/OEXConversationsProvider'
 // Conversations hooks
 export { useRealtimeConversation } from './hooks/useRealtimeConversation'
 export { useConversationList } from './hooks/useConversationList'
+
+// Voice components
+export { CallBar } from './components/CallBar'
+export type {
+  CallBarProps,
+  CallBarStatusProps,
+  CallBarTimerProps,
+  CallBarControlsProps,
+  CallBarCallerInfoProps,
+} from './components/CallBar'
+
+export { Dialer } from './components/Dialer'
+export type { DialerProps } from './components/Dialer'
+
+export { AudioDeviceSelector } from './components/AudioDeviceSelector'
+export type { AudioDeviceSelectorProps } from './components/AudioDeviceSelector'
+
+export { IncomingCallBanner } from './components/IncomingCallBanner'
+export type { IncomingCallBannerProps } from './components/IncomingCallBanner'
+
+export { PowerDialerPanel } from './components/PowerDialerPanel'
+export type {
+  PowerDialerPanelProps,
+  PowerDialerPanelLeadInfoProps,
+  PowerDialerPanelQueueProgressProps,
+  PowerDialerPanelControlsProps,
+  PowerDialerPanelStatsProps,
+} from './components/PowerDialerPanel'
