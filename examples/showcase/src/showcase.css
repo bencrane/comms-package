@@ -1,0 +1,125 @@
+/* Showcase app chrome — NOT part of oex-comms.css */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+.showcase-root {
+  min-height: 100vh;
+  padding: 24px 32px 64px;
+  background: var(--oex-bg-secondary);
+  transition: background 200ms ease, color 200ms ease;
+}
+
+.showcase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--oex-border-default);
+}
+
+.showcase-header h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.showcase-theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--oex-border-default);
+  border-radius: 9999px;
+  background: var(--oex-bg-primary);
+  color: var(--oex-text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.showcase-theme-toggle:hover {
+  background: var(--oex-bg-tertiary);
+}
+
+.showcase-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Section wrapper */
+.showcase-section {
+  background: var(--oex-bg-primary);
+  border: 1px solid var(--oex-border-default);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--oex-shadow-sm);
+}
+
+.showcase-section h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.showcase-section p {
+  font-size: 13px;
+  color: var(--oex-text-secondary);
+  margin-bottom: 16px;
+}
+
+/* State controls */
+.showcase-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 8px;
+  background: var(--oex-bg-secondary);
+  border-radius: 10px;
+}
+
+.showcase-controls button {
+  padding: 4px 12px;
+  border: 1px solid var(--oex-border-default);
+  border-radius: 6px;
+  background: var(--oex-bg-primary);
+  color: var(--oex-text-primary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 100ms ease, border-color 100ms ease;
+}
+
+.showcase-controls button:hover {
+  background: var(--oex-bg-tertiary);
+}
+
+.showcase-controls button[data-selected="true"] {
+  background: var(--oex-accent-primary);
+  color: white;
+  border-color: var(--oex-accent-primary);
+}
+
+.showcase-controls label {
+  font-size: 11px;
+  color: var(--oex-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  align-self: center;
+  margin-right: 4px;
+}
+
+.showcase-demo {
+  padding: 16px;
+  border: 1px dashed var(--oex-border-default);
+  border-radius: 10px;
+  background: var(--oex-bg-secondary);
+}
+
+/* Constrain thread/list heights for demo */
+.showcase-demo-constrained {
+  height: 400px;
+  overflow: hidden;
+}
