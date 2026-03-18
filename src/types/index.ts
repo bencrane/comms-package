@@ -3,6 +3,7 @@ export * from './conversations'
 export * from './events'
 export * from './messaging'
 export * from './voice'
+export * from './timeline'
 
 export interface OEXError {
   code: number

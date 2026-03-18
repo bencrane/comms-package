@@ -143,3 +143,23 @@ export type {
   ConversationListProps,
   ConversationListItemProps,
 } from './components/ConversationList'
+
+// Timeline types
+export type {
+  OEXTimelineChannel,
+  OEXTimelineDirection,
+  OEXTimelineEntry,
+  OEXTimelineParams,
+} from './types'
+
+// Timeline hook
+export { useActivityTimeline } from './hooks/useActivityTimeline'
+
+// Timeline component
+export { ActivityTimeline } from './components/ActivityTimeline'
+export type {
+  ActivityTimelineProps,
+  ActivityTimelineEntryProps,
+  ActivityTimelineFiltersProps,
+  ActivityTimelineLoadMoreProps,
+} from './components/ActivityTimeline'
